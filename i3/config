@@ -23,6 +23,20 @@ font pango:monospace 8
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xrandr --output HDMI1 --auto --right-of eDP1
+
+# run picom
+exec_always --no-startup-id picom &
+
+# run battery low warning
+exec_always --no-startup-id battery&
+
+# run lockscreen
+bindsym $mod+i exec lock
+
+# monitor settings
+bindsym $mod+n exec xrandr --auto --output eDP-1 --mode 1920x1080 --right-of HDMI-1 && i3-msg restart &
+bindsym $mod+m exec xrandr --auto --output HDMI-1 --off && i3-msg restart &
+
 set $fm eDP1
 set $sm HDMI1
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
@@ -223,6 +237,14 @@ bar {
 
 
 exec_always feh --bg-fill $HOME/Pictures/wall/peakpx.jpg
+
+
+# # Sreen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+
+# # suspend system
+bindsym $mod+Shift+period exec systemctl suspend
 
 #multi monitor setup
 
