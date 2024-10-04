@@ -3,7 +3,7 @@ all: install_packages copy_nvim copy_alacritty copy_tmux copy_bashrc copy_i3
 
 install_packages:
 	@echo "Installing packages..."
-	yay -S --noconfirm nvim alacritty tmux vlc nodejs npm  
+	yay -S --noconfirm nvim alacritty tmux vlc nodejs npm picom  
 	
 copy_nvim:
 	@echo "Copying nvim to ~/.config/ dir .."
@@ -13,6 +13,7 @@ copy_nvim:
 copy_alacritty:
 	@echo "Copying alacritty to ~/.config/dir .."
 	@cp -r alacritty/ ~/.config/
+	picom -b
 	@echo "Copied alacritty sucessfully"
 
 copy_tmux:
