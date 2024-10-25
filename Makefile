@@ -1,9 +1,9 @@
-all: install_packages copy_nvim copy_alacritty copy_tmux copy_bashrc copy_i3 copy_wall i3 
+all: install_packages copy_nvim copy_alacritty copy_tmux copy_bashrc copy_i3 copy_wall 
 
 
 install_packages:
 	@echo "Installing packages..."
-	yay -S --noconfirm neovim alacritty tmux vlc nodejs npm picom nvim-packer-git xclip neofetch feh bumblebee-status brightnessctl networkmanager-git ranger
+	yay -S --noconfirm neovim alacritty tmux vlc nodejs npm picom nvim-packer-git xclip neofetch feh bumblebee-status brightnessctl networkmanager-git ranger dmenu dunst
 	
 copy_nvim:
 	@echo "Copying nvim to ~/.config/ dir .."
