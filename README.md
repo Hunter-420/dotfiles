@@ -52,7 +52,7 @@ After running the Makefile:
 
 1. Navigate to the configuration file of plugins:
    ```bash
-  cd ~/.config/nvim/lua/archguy/
+    cd ~/.config/nvim/lua/archguy/
    ```
    
 2. Open packer.lua on Neovim and run:
