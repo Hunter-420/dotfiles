@@ -61,6 +61,16 @@ After running the Makefile:
    :PackerSync
    ```
 
+### Tmux Shortcuts in .bashrc
+
+- **`tmka`**: Kill all Tmux sessions.
+- **`tmls`**: List all Tmux sessions.
+- **`tmns <session_name>`**: Create a new Tmux session with the specified name.
+- **`tmas <session_name>`**: Attach to an existing Tmux session by name.
+- **`tmks <session_name>`**: Kill a specific Tmux session by name.
+- **`tml`**: Alias for listing Tmux sessions.
+
+
 ## Inspirations
 
 The Neovim configuration is inspired by [ThePrimeagen](https://github.com/theprimeagen).
