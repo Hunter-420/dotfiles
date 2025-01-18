@@ -78,14 +78,16 @@ copy_nvim:
 copy_alacritty:
 	@echo "Copying alacritty to ~/.config/dir .."
 	@cp -rf alacritty/ ~/.config/
-	@if ! pgrep -x "picom" > /dev/null; then \
-		echo "Starting picom..."; \
-		picom -b; \
-	else \
-		echo "Picom is already running, skipping."; \
+	# Check and stop any running composite manager
+	@if pgrep -x "picom" > /dev/null || pgrep -x "compton" > /dev/null; then \
+		echo "Stopping any running composite manager..."; \
+		pkill -x picom || true; \
+		pkill -x compton || true; \
 	fi
+	# Start picom
+	@echo "Starting picom..."
+	@picom -b
 	@echo "Copied alacritty successfully"
-
 
 copy_tmux:
 	@echo "Copying tmux to ~/ .."
