@@ -1,0 +1,58 @@
+[
+  {
+    "id": "0x00c00004",
+    "x": 4,
+    "y": 61,
+    "width": 956,
+    "height": 1037,
+    "class": "chromium"
+  },
+  {
+    "id": "0x02800003",
+    "x": 964,
+    "y": 61,
+    "width": 956,
+    "height": 1037,
+    "class": "Alacritty"
+  },
+  {
+    "id": "0x00c00035",
+    "x": 4,
+    "y": 61,
+    "width": 956,
+    "height": 1037,
+    "class": "chromium"
+  },
+  {
+    "id": "0x01c00003",
+    "x": 0,
+    "y": 0,
+    "width": 1920,
+    "height": 1080,
+    "class": "Alacritty"
+  },
+  {
+    "id": "0x02600003",
+    "x": 4,
+    "y": 61,
+    "width": 1916,
+    "height": 1037,
+    "class": "Alacritty"
+  },
+  {
+    "id": "0x04800003",
+    "x": 4,
+    "y": 61,
+    "width": 1916,
+    "height": 1037,
+    "class": "postman"
+  },
+  {
+    "id": "0x00600005",
+    "x": 4,
+    "y": 61,
+    "width": 1916,
+    "height": 1037,
+    "class": "discord"
+  }
+]

@@ -15,10 +15,11 @@ return require('packer').startup(function(use)
 	}
 
 	use ({
-		"rose-pine/neovim", 
-		as = "rose-pine",
+	    "sainnhe/gruvbox-material",	
+        "rose-pine/neovim", 
+        as = "rose-pine",
 		config = function()
-			vim.cmd('colorscheme rose-pine')
+			vim.cmd('colorscheme gruvbox-material')
 		end
 	})
 
@@ -28,6 +29,20 @@ return require('packer').startup(function(use)
 	use('mbbill/undotree')
 	use('tpope/vim-fugitive')
     use('vimwiki/vimwiki')
+    use {
+  'm4xshen/hardtime.nvim',
+  requires = {
+    'MunifTanjim/nui.nvim',
+  }
+}
+
+use {
+  'prettier/vim-prettier',
+  run = 'npm install --frozen-lockfile --production',
+  ft = { 'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html', 'lua' }
+}
+
+    use("tris203/precognition.nvim")
     use {
 	  "VonHeikemen/lsp-zero.nvim",
 	  branch = "v1.x",

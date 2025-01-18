@@ -26,6 +26,9 @@ vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
+-- for hardtime plugin
+vim.opt.showmode = false
+
 vim.opt.updatetime = 50
 
 -- vim.opt.colorcolumn = "80"

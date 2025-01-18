@@ -8,6 +8,7 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias vi='nvim'
+alias cls='clear'
 alias tmka='tmux kill-server'
 alias tmls='tmux list'
 alias tmns='tmux new -s'

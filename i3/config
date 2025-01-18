@@ -13,17 +13,18 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
-
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
+
+font pango:ttf-ubuntu-nerd 11
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xrandr --output HDMI1 --auto --right-of eDP1
-exec --no-startup-id libinput-gestures-setup start
+
+exec_always --no-startup-id libinput-gestures
 # run picom
 exec_always --no-startup-id picom &
 
@@ -175,6 +176,23 @@ bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 bindsym Mod1+1 workspace number $ws11
 
+# Assign applications to workspaces
+assign [class="zen-browser"] workspace number $ws1
+assign [class="alacritty"] workspace number $ws2
+assign [class="discord"] workspace number $ws9
+assign [class="Postman"] workspace number $ws4
+assign [class="lens"] workspace number $ws5
+
+# Start applications on specific workspaces
+exec --no-startup-id i3-msg "workspace number $ws1; exec zen-browser"
+exec --no-startup-id i3-msg "workspace number $ws2; exec alacritty"
+exec --no-startup-id i3-msg "workspace number $ws9; exec discord"
+exec --no-startup-id i3-msg "workspace number $ws4; exec postman"
+exec --no-startup-id i3-msg "workspace number $ws5; exec lens"
+
+# Optional: Switch to a default workspace after launching
+exec --no-startup-id i3-msg "workspace number $ws1"
+
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
 bindsym $mod+Shift+2 move container to workspace number $ws2
@@ -227,17 +245,17 @@ bindsym $mod+r mode "resize"
 
 bar {
     status_command /usr/bin/bumblebee-status \
-        -m cpu memory battery time nic dunstctl mpd   \
+        -m cmus sensors cpu memory disk battery time nic dunstctl mpd \
 	pasink pasource \
         -p time.format="%H:%M" \
-        -t solarized-powerline
+        -t gruvbox-powerline 
 
 	position top
 }
 
 
 
-exec_always feh --bg-fill $HOME/Pictures/wall/peakpx.jpg
+exec_always feh --bg-fill $HOME/Pictures/wall/wallpapers/gruvbox/wolf.jpg
 
 
 # # Sreen brightness controls
@@ -247,5 +265,9 @@ bindsym XF86MonBrightnessUp exec brightnessctl set +5%
 # # suspend system
 bindsym $mod+Shift+period exec systemctl suspend
 
-#multi monitor setup
+# Save the session with Alt+Shift+S
+bindsym Mod1+Shift+s exec --no-startup-id ~/.config/i3/save_session.sh
+
+# Restore the session with Alt+Shift+R
+bindsym Mod1+Shift+r exec --no-startup-id ~/.config/i3/restore_session.sh
 

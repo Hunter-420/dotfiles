@@ -1,39 +1,93 @@
-all: install_packages copy_nvim copy_alacritty copy_tmux copy_bashrc copy_i3 copy_wall 
-
+all: install_packages enable_services update_config restart_services migrate_packages copy_nvim copy_alacritty copy_tmux copy_bashrc copy_i3 copy_wall sync_packer
 
 install_packages:
 	@echo "Installing packages..."
-	yay -S --noconfirm neovim alacritty tmux vlc nodejs npm picom nvim-packer-git xclip neofetch feh bumblebee-status brightnessctl networkmanager-git ranger dmenu dunst
-	
+	@for pkg in xorg-xrandr pavucontrol ttf-ubuntu-mono-nerd ttf-ubuntu-nerd libinput-gestures discord postman lens-bin telegram-desktop-bin podman chromium neovim alacritty tmux vlc nodejs npm picom nvim-packer-git xclip neofetch feh bumblebee-status brightnessctl git ranger dmenu dunst transmission-qt maim; do \
+		if ! pacman -Q $$pkg &>/dev/null; then \
+			yay -S --noconfirm $$pkg; \
+			echo "Installed $$pkg"; \
+		else \
+			echo "$$pkg is already installed, skipping."; \
+		fi \
+	done
+
+	@echo "Installing packages for VM ..."
+	@for pkg in doctl kubectl i3-wm i3blocks i3lock qemu-full virt-manager virt-viewer dnsmasq bridge-utils libguestfs ebtables vde2 openbsd-netcat; do \
+		if ! pacman -Q $$pkg &>/dev/null; then \
+			sudo pacman -S --noconfirm $$pkg; \
+			echo "Installed $$pkg"; \
+		else \
+			echo "$$pkg is already installed, skipping."; \
+		fi \
+	done
+	@echo "All packages installed successfully."
+
+enable_services:
+	@echo "Enabling services ..."
+	sudo systemctl start libvirtd.service
+	sudo systemctl enable libvirtd.service
+
+update_config:
+	@echo "Updating /etc/libvirt/libvirtd.conf..."
+	@sudo sed -i 's/^#unix_sock_group = "libvirt"/unix_sock_group = "libvirt"/' /etc/libvirt/libvirtd.conf
+	@sudo sed -i 's/^#unix_sock_rw_perms = "0770"/unix_sock_rw_perms = "0770"/' /etc/libvirt/libvirtd.conf
+	@echo "Configuration updated successfully!"
+
+restart_services:
+	@echo "Restarting services ..."
+	sudo systemctl restart libvirtd.service
+	@echo "Services restarted successfully!"
+
+migrate_packages:
+	@echo "Migrating packages ..."
+	@echo "Migrate alacritty config ..."
+	@alacritty migrate
+
+install_themes:
+	@echo "Installing alacritty-themes..."
+	@npm install -g alacritty-themes
+	@echo "alacritty-themes installed successfully!"
+
 copy_nvim:
 	@echo "Copying nvim to ~/.config/ dir .."
 	@cp -rf nvim/ ~/.config/  
-	@echo "Copied nvim sucessfully ..."
+	@echo "Copied nvim successfully ..."
 
 copy_alacritty:
 	@echo "Copying alacritty to ~/.config/dir .."
 	@cp -rf alacritty/ ~/.config/
-	picom -b
-	@echo "Copied alacritty sucessfully"
+	@if ! pgrep -x "picom" > /dev/null; then \
+		echo "Starting picom..."; \
+		picom -b; \
+	else \
+		echo "Picom is already running, skipping."; \
+	fi
+	@echo "Copied alacritty successfully"
+
 
 copy_tmux:
-	@echo "copying tmux to ~/ .."
+	@echo "Copying tmux to ~/ .."
 	@cp -rf .tmux/ ~/  
 	@cp -f .tmux.conf ~/  
-	@echo "copied tmux sucessfully"
+	@echo "Copied tmux successfully"
 
 copy_bashrc:
-	@echo "copying bashrc to ~/ .."
+	@echo "Copying bashrc to ~/ .."
 	@cp -f .bashrc ~/  
-	@echo "copied bashrc sucessfully"
+	@echo "Copied bashrc successfully"
 
 copy_i3:
-	@echo "copying i3 to ~/.config/ .."
+	@echo "Copying i3 to ~/.config/ .."
 	@cp -rf i3/ ~/.config/  
-	@echo "copied i3 sucessfully"
+	@echo "Copied i3 successfully"
 
 copy_wall:
-	@echo "copying wall tp ~/Pictures/wall/ .."
+	@echo "Copying wall to ~/Pictures/wall/ .."
 	@mkdir -p ~/Pictures/wall/
 	@cp -rf wall/ ~/Pictures/wall/
-	@echo "copid wall sucessfully"
+	@echo "Copied wall successfully"
+
+sync_packer:
+	@echo "Opening packer.lua, sourcing it, and running PackerSync..."
+	@nvim -c "edit ~/.config/nvim/lua/archguy/packer.lua" -c "so" -c "PackerSync" -c "qa"
+	@echo "PackerSync completed successfully!"
