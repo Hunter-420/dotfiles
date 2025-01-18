@@ -1,4 +1,4 @@
-all: install_git_packages install_packages enable_services update_config restart_services migrate_packages copy_nvim copy_alacritty copy_tmux copy_bashrc copy_i3 copy_wall sync_packer
+all: install_git_packages install_packages enable_services update_config restart_services copy_nvim copy_alacritty copy_tmux copy_bashrc copy_i3 copy_wall sync_packer
 
 install_git_packages:
 	@echo "Installing git packages..."
@@ -64,11 +64,6 @@ restart_services:
 	@echo "Restarting services ..."
 	sudo systemctl restart libvirtd.service
 	@echo "Services restarted successfully!"
-
-migrate_packages:
-	@echo "Migrating packages ..."
-	@echo "Migrate alacritty config ..."
-	@alacritty migrate alacritty
 
 install_themes:
 	@echo "Installing alacritty-themes..."
