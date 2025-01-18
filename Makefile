@@ -1,4 +1,4 @@
-all: install_packages enable_services update_config restart_services migrate_packages copy_nvim copy_alacritty copy_tmux copy_bashrc copy_i3 copy_wall sync_packer
+all: install_git_packages install_packages enable_services update_config restart_services migrate_packages copy_nvim copy_alacritty copy_tmux copy_bashrc copy_i3 copy_wall sync_packer
 
 install_git_packages:
 	@echo "Installing git packages..."
