@@ -1,5 +1,32 @@
 all: install_packages enable_services update_config restart_services migrate_packages copy_nvim copy_alacritty copy_tmux copy_bashrc copy_i3 copy_wall sync_packer
 
+install_git_packages:
+	@echo "Installing git packages..."
+	
+	# Check if yay is installed
+	@if ! pacman -Q yay &>/dev/null; then \
+		echo "Installing git and base-devel if needed..."; \
+		sudo pacman -S --needed --noconfirm git base-devel; \
+		echo "Cloning yay repository..."; \
+		git clone https://aur.archlinux.org/yay.git; \
+		cd yay && makepkg -si --noconfirm; \
+		cd .. && rm -rf yay; \
+		echo "Installed yay successfully."; \
+	else \
+		echo "yay is already installed, skipping."; \
+	fi
+	
+	# Cloning copilot.vim repository if not already cloned
+	@if [ ! -d "~/.vim/pack/github/start/copilot.vim" ]; then \
+		echo "Cloning copilot.vim repository..."; \
+		git clone https://github.com/github/copilot.vim.git ~/.vim/pack/github/start/copilot.vim; \
+		echo "Cloned copilot.vim repository successfully."; \
+	else \
+		echo "copilot.vim is already installed, skipping."; \
+	fi
+	
+	@echo "Git packages installed successfully."
+
 install_packages:
 	@echo "Installing packages..."
 	@for pkg in xorg-xrandr pavucontrol ttf-ubuntu-mono-nerd ttf-ubuntu-nerd libinput-gestures discord postman lens-bin telegram-desktop-bin podman chromium neovim alacritty tmux vlc nodejs npm picom nvim-packer-git xclip neofetch feh bumblebee-status brightnessctl git ranger dmenu dunst transmission-qt maim; do \
