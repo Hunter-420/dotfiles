@@ -68,7 +68,7 @@ restart_services:
 migrate_packages:
 	@echo "Migrating packages ..."
 	@echo "Migrate alacritty config ..."
-	@alacritty migrate
+	@alacritty migrate alacritty
 
 install_themes:
 	@echo "Installing alacritty-themes..."
