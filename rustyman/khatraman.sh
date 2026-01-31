@@ -237,8 +237,22 @@ case "$CMD" in
         ;;
     getorder)
         PATH="/get-order"
-        # ID needs to be supplied or we use a dummy default
-        BODY='{"symbol": "{{pair}}", "id": "ORDER_ID_HERE"}'
+        FILE_PATH="$SCRIPT_DIR/orders/get-order.json"
+        
+        if [ "$INTERACTIVE" -eq 1 ]; then
+            echo -e "${CYAN}Enter Order Details:${NC}"
+            read -p "Order ID: " _id
+            if [ -z "$_id" ]; then
+                log_error "Order ID is required!"
+                exit 1
+            fi
+            BODY=$($JQ_BIN -n --arg s "$DEFAULT_PAIR" --arg id "$_id" '{symbol: $s, id: $id}')
+        elif [ -f "$FILE_PATH" ]; then
+            log_info "Loading body from $FILE_PATH"
+            BODY=$($JQ_BIN -c --arg s "$DEFAULT_PAIR" '.symbol = $s' "$FILE_PATH")
+        else
+            BODY='{"symbol": "{{pair}}", "id": "ORDER_ID_HERE"}'
+        fi
         ;;
     create)
         PATH="/create-order"
@@ -269,7 +283,37 @@ case "$CMD" in
         ;;
     createmulti)
         PATH="/place-multi-orders"
-        BODY='{"pair": "{{pair}}", "side": "buy", "lowerPrice": 59, "upperPrice": 78, "numberOfOrders": 20, "quantityPerOrder": 1270, "priceDecimals": 6, "quantityDecimals": 6}'
+        FILE_PATH="$SCRIPT_DIR/orders/createmulti-order.json"
+        
+        if [ "$INTERACTIVE" -eq 1 ]; then
+            echo -e "${CYAN}Enter Multi-Order Details:${NC}"
+            read -p "Side (buy/sell): " _side
+            read -p "Lower Price: " _lower
+            read -p "Upper Price: " _upper
+            read -p "Number of Orders: " _num
+            read -p "Quantity Per Order: " _qty
+            read -p "Price Decimals (default 6): " _pdec
+            read -p "Quantity Decimals (default 6): " _qdec
+            
+            _pdec=${_pdec:-6}
+            _qdec=${_qdec:-6}
+            
+            BODY=$($JQ_BIN -n \
+                --arg p "$DEFAULT_PAIR" \
+                --arg sd "$_side" \
+                --arg lp "$_lower" \
+                --arg up "$_upper" \
+                --arg n "$_num" \
+                --arg q "$_qty" \
+                --arg pd "$_pdec" \
+                --arg qd "$_qdec" \
+                '{pair: $p, side: $sd, lowerPrice: ($lp|tonumber), upperPrice: ($up|tonumber), numberOfOrders: ($n|tonumber), quantityPerOrder: ($q|tonumber), priceDecimals: ($pd|tonumber), quantityDecimals: ($qd|tonumber)}')
+        elif [ -f "$FILE_PATH" ]; then
+            log_info "Loading body from $FILE_PATH"
+            BODY=$($JQ_BIN -c --arg p "$DEFAULT_PAIR" '.pair = $p' "$FILE_PATH")
+        else
+            BODY='{"pair": "{{pair}}", "side": "buy", "lowerPrice": 59, "upperPrice": 78, "numberOfOrders": 20, "quantityPerOrder": 1270, "priceDecimals": 6, "quantityDecimals": 6}'
+        fi
         ;;
     cancel)
         PATH="/cancel-order"

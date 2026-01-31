@@ -1,0 +1,10 @@
+{
+  "pair": "PBTC/USDT",
+  "side": "buy",
+  "lowerPrice": 59,
+  "upperPrice": 78,
+  "numberOfOrders": 20,
+  "quantityPerOrder": 1270,
+  "priceDecimals": 6,
+  "quantityDecimals": 6
+}
