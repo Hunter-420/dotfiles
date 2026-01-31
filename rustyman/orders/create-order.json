@@ -1,0 +1,7 @@
+{
+  "symbol": "PBTC/USDT",
+  "type": "limit",
+  "side": "buy",
+  "amount": 50,
+  "price": 0.17
+}
