@@ -3,13 +3,13 @@ return {
     {
         "mbbill/undotree",
         config = function()
-            vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+            vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Toggle Undotree" })
         end
     },
     {
         "tpope/vim-fugitive",
         config = function()
-            vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
+            vim.keymap.set("n", "<leader>gs", vim.cmd.Git, { desc = "Open Git Status (Fugitive)" })
         end
     },
     {
